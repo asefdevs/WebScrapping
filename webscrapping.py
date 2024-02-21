@@ -6,43 +6,51 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
 import base64
+from bs4 import BeautifulSoup
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
-# Set the path to the chromedriver
+
+
 chrome_driver_path = "/usr/local/bin/chromedriver"
 
-# Create a new instance of the Chrome driver
 service = webdriver.chrome.service.Service(chrome_driver_path)
 driver = webdriver.Chrome(service=service)
 
-# Open the website
-driver.get("https://axatek.axasigorta.com.tr/login")
+# driver.get("https://axatek.axasigorta.com.tr/login")
 
 # Wait for the page to load
-time.sleep(5)
+# time.sleep(5)
 
-# Find the image element
-# Get the source of the image
-for x in range(6000):
+def save_captcha_image(driver, refresh_xpath, save_dir_u, x, photo_xpath=None):
     try:
-        image = driver.find_element(By.XPATH, '//*[@id="inspire"]/div/main/div/div/div/div/div[3]/div/form/div[4]/div/div/div[1]/div/img')
+        # Find the captcha image    
+        # wait = WebDriverWait(driver, 10)
+        # image = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="f405916fb284346e1b2e84fbf51085fb8"]/div[3]/div/img')))
+        image = driver.find_element(By.CLASS_NAME, 'captcha-image')
         src = image.get_attribute('src')
         image_data = base64.b64decode(src.split(',')[1])
-
         img = Image.open(BytesIO(image_data))
         project_dir = os.path.dirname(os.path.abspath(__file__))
-        save_dir  = os.path.join(project_dir, "media","axasigorta")
+        save_dir = os.path.join(project_dir, "media",f"{save_dir_u}")
         save_path = os.path.join(save_dir, f"captcha{x}.png")
         # Save the image
         img.save(save_path)
-
-        print("Image saved", save_path)
-        refresh_button = driver.find_element(By.XPATH, '//*[@id="inspire"]/div/main/div/div/div/div/div[3]/div/form/div[4]/div/div/div[2]/button/span')
+        refresh_button = driver.find_element(By.CLASS_NAME, f'{refresh_xpath}')
         refresh_button.click()
         time.sleep(2)
-
     except Exception as e:
         print(e)
-        break
+        return False
+# for x in range(10):
+#     save_captcha_image(driver, '//*[@id="inspire"]/div/main/div/div/div/div/div[3]/div/form/div[4]/div/div/div[1]/div/img', '//*[@id="inspire"]/div/main/div/div/div/div/div[3]/div/form/div[4]/div/div/div[2]/button/span', "axasigorta", x)
 
-# Close the browser
+# driver.get("https://ejento.somposigorta.com.tr/")
+# driver.get("https://axatek.axasigorta.com.tr/login")
+driver.get("https://online.ankarasigorta.com.tr/")
+
+time.sleep(15)
+
+
+save_captcha_image(driver,'btn-refresh btn btn-default', "ankarasigorta", 0)
 driver.quit()
