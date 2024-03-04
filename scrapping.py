@@ -43,7 +43,10 @@ axatek_link = "https://axatek.axasigorta.com.tr/login"
 axatek_find_method = "class"
 axatek_find_photo = "char-list-img"
 axatek_find_button = "v-btn__content"
-axatek_location = "axatek"
+axatek_location = "axateks"
 axatek_filename = "axatek"
 
-image_scrapping(ankara_link, ankara_find_method, ankara_find_photo, ankara_find_button, ankara_location, ankara_filename, 1)
+# image_scrapping(ankara_link, ankara_find_method, ankara_find_photo, ankara_find_button, ankara_location, ankara_filename, 1)
+# image_scrapping(somposigorta_link, somposigorta_find_method, somposigorta_find_photo, sompos_find_button, somposigorta_location, somposigorta_filename, 1)
+image_scrapping(axatek_link, axatek_find_method, axatek_find_photo, axatek_find_button, axatek_location, axatek_filename, 1)
+
