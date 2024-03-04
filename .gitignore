@@ -40,7 +40,6 @@ pip-delete-this-directory.txt
 # Virtual environment
 venv/
 env/
-/images
 
 # IDEs
 .idea/
